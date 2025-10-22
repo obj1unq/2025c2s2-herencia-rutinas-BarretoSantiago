@@ -1,0 +1,30 @@
+import herencia.*
+describe "a" {
+  test "calorias maraton" {
+    const carrera1 = new Running (intensidad = 1.2)
+    const carrera2 = new Running (intensidad = 1.2)
+    assert.equals(360, carrera1.caloriasQuemadas(5))
+    assert.equals(10200, carrera2.caloriasQuemadas(90))
+  }
+
+
+  test "maraton"{
+    const maraton = new Maraton (intensidad = 1.5)
+    const maraton2 = new Maraton (intensidad = 1.5)
+    assert.equals(900,  maraton.caloriasQuemadas(5)) 
+    assert.equals(25500,  maraton2.caloriasQuemadas(90)) 
+  }
+
+  test "remo"{
+    const remo1 = new Remo ()
+    const remo2 = new Remo ()
+    assert.equals(520, remo1.caloriasQuemadas(5))
+    assert.equals(9360, remo2.caloriasQuemadas(90))
+  }
+  test "remo Competicion"{
+    const remoCompe1 = new RemoCompeticion ()
+    const remoCompe2 = new RemoCompeticion ()
+    assert.equals(510, remoCompe1.caloriasQuemadas(5))
+    assert.equals(12750, remoCompe2.caloriasQuemadas(90))
+  }
+}
