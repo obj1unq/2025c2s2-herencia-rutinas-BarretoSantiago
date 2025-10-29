@@ -36,26 +36,31 @@ class Persona {
     method tiempo()
     method peso()
     method kilosPorCaloria()
-    //method kilosPorCaloríaQuePierde(rutina)
-    method formula(rutina){
-        return self.peso() - (rutina.caloriasQuemadas(self.tiempo())) / self.kilosPorCaloria()
+    method pesoAlRealizar(rutina)
+    method pesoQuePierde(rutina){
+       return rutina.caloriasQuemadas(self.tiempo())/ self.kilosPorCaloria()
     }
+    method verificarRutina(rutina){
+        if(not self.puedeRealizar(rutina)){
+            self.error("no puede hacer la rutina")
+        }
+    }
+    method puedeRealizar(rutina)
 }
 
 class PersonaSedentaria inherits Persona {
-    var property tiempo = 0
-    var property peso = 0
+    const property tiempo 
+    var property peso
     const property kilosPorCaloria = 7000
-    method verificarAplicarRutina(){
-        if(peso < 50){
-            self.error("no puede hacer la rutina, su peso es menor o igual de 50")
-        }
+    override method pesoAlRealizar(rutina){
+        self.verificarRutina(rutina)
+        peso = (peso - self.pesoQuePierde(rutina)).truncate(3)
     }
-    method pesoAlRealizar(rutina){
-        self.verificarAplicarRutina()
-        return self.formula(rutina).truncate(3)
+    override method puedeRealizar(rutina){
+        return peso < 50
     }
 }
+
 
 class PersonaAtleta inherits Persona {
     const property tiempo = 90
@@ -63,12 +68,15 @@ class PersonaAtleta inherits Persona {
     const property kilosPorCaloria = 8000
     method pesoAlRealizar(rutina){
         self.verificarAplicarRutina(rutina)
-        return (self.peso() - ((rutina.caloriasQuemadas(self.tiempo())/self.kilosPorCaloria())-1)).truncate(3)
+        return (self.peso() - self.pesoQuePierde(rutina)-1).truncate(3)
     }
     method verificarAplicarRutina(rutina){
-        if(rutina.caloriasQuemadas(tiempo) < 10000){
+        if(not self.puedeRealizar(rutina)){
             self.error("no puede hacer la rutina, no quema las calorias minimas")
         }
+    }
+    override method puedeRealizar(rutina){
+
     }
 }
 
