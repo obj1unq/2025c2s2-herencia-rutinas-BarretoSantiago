@@ -28,3 +28,18 @@ describe "a" {
     assert.equals(12750, remoCompe2.caloriasQuemadas(90))
   }
 }
+
+describe "parte 2"{
+  test "persona atleta"{
+    const persona1 = new PersonaAtleta (peso = 40)
+    const runningPlaya = new Running (intensidad = 1.2)
+    const maratonBA = new Maraton (intensidad = 1.5)
+    const remoDelta = new Remo ()
+    const remoCaminoRemeros = new RemoCompeticion ()
+    assert.equals(39.725, persona1.pesoAlRealizar(runningPlaya))
+    assert.equals(37.812, persona1.pesoAlRealizar(maratonBA))
+    assert.throwsException({persona1.verificarAplicarRutina(remoDelta)}) 
+    assert.equals(39.406, persona1.pesoAlRealizar(remoCaminoRemeros))
+
+  }
+}
