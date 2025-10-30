@@ -1,0 +1,94 @@
+import herencia.*
+describe "parte 1"{
+  test "calorias maraton" {
+    const carrera1 = new Running (intensidad = 1.2)
+    const carrera2 = new Running (intensidad = 1.2)
+    assert.equals(360, carrera1.caloriasQuemadas(5))
+    assert.equals(10200, carrera2.caloriasQuemadas(90))
+  }
+
+
+  test "maraton"{
+    const maraton = new Maraton (intensidad = 1.5)
+    const maraton2 = new Maraton (intensidad = 1.5)
+    assert.equals(900,  maraton.caloriasQuemadas(5)) 
+    assert.equals(25500,  maraton2.caloriasQuemadas(90)) 
+  }
+
+  test "remo"{
+    const remo1 = new Remo ()
+    const remo2 = new Remo ()
+    assert.equals(520, remo1.caloriasQuemadas(5))
+    assert.equals(9360, remo2.caloriasQuemadas(90))
+  }
+  test "remo Competicion"{
+    const remoCompe1 = new RemoCompeticion ()
+    const remoCompe2 = new RemoCompeticion ()
+    assert.equals(510, remoCompe1.caloriasQuemadas(5))
+    assert.equals(12750, remoCompe2.caloriasQuemadas(90))
+  }
+}
+
+describe "parte 2"{
+  test "personas sedentarias" {
+    const persona1 = new PersonaSedentaria (peso = 60, tiempo=5)
+    const persona2 = new PersonaSedentaria (peso = 60, tiempo=5) //se que se puede inicializar de una forma mas corta y prolija
+    const persona3 = new PersonaSedentaria (peso = 60, tiempo=5) //pero no me acuerdo como 
+    const persona4 = new PersonaSedentaria (peso = 60, tiempo=5) //en mi defensa no son todos exactamente iguales
+    const runningPlaya = new Running (intensidad = 1.2)
+    const maratonBA = new Maraton (intensidad = 1.5)
+    const remoDelta = new Remo ()
+    const remoCaminoRemeros = new RemoCompeticion ()
+    persona1.pesoAlRealizar(runningPlaya)
+    assert.equals(59.948, persona1.peso())
+    persona2.pesoAlRealizar(maratonBA)
+    assert.equals(59.871, persona2.peso())
+    persona3.pesoAlRealizar(remoDelta)
+    assert.equals(59.925, persona3.peso())
+    persona4.pesoAlRealizar(remoCaminoRemeros)
+    assert.equals(59.927, persona4.peso())
+  }
+  test "personas atletas"{
+    const persona1 = new PersonaAtleta (peso = 40)
+    const persona2 = new PersonaAtleta (peso = 40)
+    const persona3 = new PersonaAtleta (peso = 40)
+    const persona4 = new PersonaAtleta (peso = 40)
+    const runningPlaya = new Running (intensidad = 1.2)
+    const maratonBA = new Maraton (intensidad = 1.5)
+    const remoDelta = new Remo ()
+    const remoCaminoRemeros = new RemoCompeticion ()
+    persona1.pesoAlRealizar(runningPlaya)
+    assert.equals(39.725, persona1.peso())
+    persona2.pesoAlRealizar(maratonBA)
+    assert.equals(37.812, persona2.peso())
+    assert.throwsException({ persona3.pesoAlRealizar(remoDelta) })
+    assert.equals(40, persona3.peso())
+    persona4.pesoAlRealizar(remoCaminoRemeros)
+    assert.equals(39.406, persona4.peso())
+  }
+}
+
+describe "parte 3"{
+  test "predio y clubes"{
+    const bob = new PersonaAtleta (peso = 40)
+    const calamardo = new PersonaSedentaria (peso = 60, tiempo=5)
+    const remoDelta = new Remo ()
+    const remoCaminoRemeros = new RemoCompeticion ()
+    const runningPlaya = new Running (intensidad = 1.2)
+    const maratonBA = new Maraton (intensidad = 1.5)
+    const nautico = new Predio (rutinas = [remoDelta, remoCaminoRemeros]) 
+    const recreo = new Predio (rutinas = [runningPlaya, maratonBA])
+    const clubBarrial = new Club(predios = [nautico, recreo])
+    assert.equals(35700, recreo.caloriasTotalesPara(bob))
+    assert.equals(22110, nautico.caloriasTotalesPara(bob))
+    assert.equals(recreo, clubBarrial.mejorPredio(bob))
+    assert.equals(1260, recreo.caloriasTotalesPara(calamardo))
+    assert.equals(1030, nautico.caloriasTotalesPara(calamardo))
+    assert.equals(recreo, clubBarrial.mejorPredio(calamardo))
+    assert.equals([], clubBarrial.prediosTranquis(bob))
+    assert.equals([recreo], clubBarrial.prediosTranquis(calamardo))
+    assert.equals(360, runningPlaya.caloriasQuemadas(calamardo.tiempo()))
+    assert.equals(#{maratonBA,remoCaminoRemeros}, clubBarrial.rutinasMasexigentesClub(bob))
+    assert.equals(#{maratonBA,remoDelta}, clubBarrial.rutinasMasexigentesClub(calamardo))
+  }
+}
